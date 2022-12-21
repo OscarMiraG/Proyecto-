@@ -1,3 +1,6 @@
+### ESTA ES LA VERSION CHIDA ###
+
+
 Datosos <- read.csv("Datos/Datos_Proyecto.csv")
 Datosos 
 
