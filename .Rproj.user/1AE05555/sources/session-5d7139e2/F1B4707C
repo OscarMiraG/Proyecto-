@@ -3,7 +3,7 @@
     "path": "~/GitHub/Proyecto-/Proyecto_Final.R",
     "project_path": "Proyecto_Final.R",
     "type": "r_source",
-    "hash": "3649896357",
+    "hash": "797565037",
     "contents": "",
     "dirty": false,
     "created": 1671657468117.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "52,14",
-        "scrollLine": "29"
+        "cursorPosition": "53,16",
+        "scrollLine": "30"
     },
     "folds": "",
-    "lastKnownWriteTime": 1671658008,
+    "lastKnownWriteTime": 1671658806,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1671658008262,
+    "last_content_update": 1671658806513,
     "read_only": false,
     "read_only_alternatives": []
 }
