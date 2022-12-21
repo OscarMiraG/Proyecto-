@@ -159,4 +159,3 @@ ELISA2(datos = bioinfo)
 promedios
 long
 
->>>>>>> 8225aa2c9b876dde3559dbdc90055c6e2629e316
