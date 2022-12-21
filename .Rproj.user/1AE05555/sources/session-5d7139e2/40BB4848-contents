@@ -83,7 +83,7 @@ ELISA <- function(x){
                             1-256000, 1-256000, 1-256000, 1-256000,
                             1-512000, 1-512000, 1-512000, 1-512000,
                             1-1024000, 1-1024000, 1-1024000, 1-1024000)
-  
+
   Promedios2 [1:84,2] <- c ("PostInmunizado","PostInmunizado","PostInmunizado",
                             "PostInmunizado","PostInmunizado","PostInmunizado",
                             "PostInmunizado","PostInmunizado","PostInmunizado",
