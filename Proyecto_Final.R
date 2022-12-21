@@ -151,3 +151,24 @@
     #### si se ve esto oscar
     #### vale gorroo
     #### Perra madre
+    attach(Datosos)
+    
+    ############PROPUESTA
+    ELISA2 <- function(datos){
+      controlneg <- readline(prompt = "Indique el valor del control negativo: ")
+      controlpos <- readline(prompt = "Indique el valor del control positivo: ")
+      coadyuv <- readline(prompt = "Indique el valor del coadyuvante: ")
+      long <- length(datos)
+      promedios <- c()
+      while(long > 0){
+        promedios <- c(promedios, (mean(datos[ , long])))
+        print("hola")
+        long <- long - 1
+      }
+      promedios <- rev(promedios)
+      print(promedios)
+    }
+ELISA2(datos = bioinfo)    
+promedios
+long
+
