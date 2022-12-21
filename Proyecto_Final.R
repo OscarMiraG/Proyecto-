@@ -141,10 +141,26 @@ ELISA(Datosos)
     attach(Datosos)
     
     ############PROPUESTA
-    ELISA2 <- function(datos){
-      controlneg <- readline(prompt = "Indique el valor del control negativo: ")
-      controlpos <- readline(prompt = "Indique el valor del control positivo: ")
-      coadyuv <- readline(prompt = "Indique el valor del coadyuvante: ")
+
+    ELISA2 <- function(datos, controlneg, controlpos, coadyuv){
+      #### ESTO ES POR SI QUEREMOS FLEXEAR, TODAVIA NO ESTA LISTO
+      #dec <- readline(prompt = "¿Quieres armar tu propia base de datos?/n/y")
+      #nombres <- readline("¿Quieres ponerle nombres a las columnas y renglones?/n/y")
+      #if(dec == "y"){
+        #datardos <- readline("Ingrese sus datos: ")
+        #colum <- readline("cuantas columnas tendra tu tabla: ")
+        #reng <- readline("cuantos renglones tendra tu tabla: ")
+        #datos <- as.numeric(datardos); colum <- as.numeric(colum); reng <- as.numeric(reng)
+        #basedatos <- matrix(datardos,nrow = reng, ncol = colum, byrow = TRUE)
+        #}else if(nombres == "y"){
+          #nombresrow <- c()
+          #nombrescol <- c()
+          #basedatos <- colnames(nombrescol)
+          #basedatos <- rownames(nombresrow)
+        #} else{ break;}
+      #}
+      controlneg <- as.numeric(controlneg);controlpos <- as.numeric(controlpos);
+      coadyuv <- as.numeric(coadyuv)
       long <- length(datos)
       promedios <- c()
       while(long > 0){
@@ -154,8 +170,10 @@ ELISA(Datosos)
       }
       promedios <- rev(promedios)
       print(promedios)
+      
     }
-ELISA2(datos = bioinfo)    
+ELISA2(datos = bioinfo, controlneg = c(1,3,4), controlpos = c(23,33,2), coadyuv = c(1,23,3))    
 promedios
 long
+ELISA2(datos = bioinfo)
 
