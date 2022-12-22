@@ -89,36 +89,16 @@ ELISA <- function(x){
                             "11", "11", "11", "11",
                             "12", "12", "12", "12")
   
-  ### Rifate esto de abajo, pero con un ciclo ###
+  for (i in 1:36){
+    Frase <- "PostInmunizado"
+    Promedios2 [1:36,2] <- Frase
+    
+  }
   
-  Promedios2 [1:84,2] <- c ("PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "PostInmunizado","PostInmunizado","PostInmunizado",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo","ControlNegativo","ControlNegativo",
-                            "ControlNegativo", "ControlNegativo","ControlNegativo")
+  for (i in 1:47){
+    Frase2 <- "ControlNegativo"
+    Promedios2 [37:84,2] <- Frase2
+  }
   
   Resumen <- summarySE (Promedios2, measurevar = "Absorbancia", groupvars = c ("Dilucion", "Muestra"))
   
@@ -176,4 +156,5 @@ ELISA2(datos = bioinfo, controlneg = c(1,3,4), controlpos = c(23,33,2), coadyuv 
 promedios
 long
 ELISA2(datos = bioinfo)
+
 
