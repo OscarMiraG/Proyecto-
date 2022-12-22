@@ -52,6 +52,7 @@ ELISA <- function(x){
   
   Promedios2 <- matrix (nrow = 84, ncol = 3)
   colnames(Promedios2) <- c ("Absorbancia", "Muestra", "Dilucion")
+  
   Promedios2 <- data.frame(Promedios2)
   
   Promedios2 [1:36,1] <- c (x [4,1], x [5,1], x [6,1], x [4,2], x [5,2], x [6,2], x[4,3], x [5,3],
@@ -60,7 +61,7 @@ ELISA <- function(x){
                             x [4,9], x [5,9], x [6,9], x [4,10], x [5,10], x [6,10], x [4,11], x [5,11], 
                             x [6,11], x [4,12], x [5,12], x [6,12])
   
-  Promedios2 [37:84,1] <- c (x[7,3] + x [7,4] + x [8,3] + x [8,4])
+  Promedios2 [37:84,1] <- c (x[7,3], x [7,4], x [8,3], x [8,4])
   
   
   
@@ -99,6 +100,8 @@ ELISA <- function(x){
     Frase2 <- "ControlNegativo"
     Promedios2 [37:84,2] <- Frase2
   }
+  
+  print (Promedios2)
   
   Resumen <- summarySE (Promedios2, measurevar = "Absorbancia", groupvars = c ("Dilucion", "Muestra"))
   
