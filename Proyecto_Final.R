@@ -4,6 +4,9 @@
 Datosos <- read.csv("Datos/Datos_Proyecto.csv")
 Datosos 
 
+Datosos2 <- read.csv ("Datos/Datos_Proyecto_2.csv")
+Datosos2
+
 ELISA <- function(x){
   numero <- readline(prompt = "Cuántas replicas se realizaron?: ")
   as.numeric(numero)
@@ -116,7 +119,6 @@ ELISA <- function(x){
     geom_point(position=pd)
   
   print (Grafica_Perrona)
-  }
 }else if (numero == 2){
   library (ggplot2)
   library (Rmisc)
@@ -162,7 +164,7 @@ ELISA <- function(x){
   print (Control_Positivo)
   print (Conjugado)
   
-  Promedios2 <- matrix (nrow = 84, ncol = 3)
+  Promedios2 <- matrix (nrow = 72, ncol = 3)
   colnames(Promedios2) <- c ("Absorbancia", "Muestra", "Dilucion")
   
   Promedios2 <- data.frame(Promedios2)
@@ -173,7 +175,7 @@ ELISA <- function(x){
                             x [3,9], x [4,9], x [3,10], x [4,10], x [3,11], x [4,11], 
                             x [3,12], x [4,12])
   
-  Promedios2 [25:72,1] <- c (x[7,3], x [7,4], x [8,3], x [8,4])
+  Promedios2 [25:72,1] <- c (x[5,3], x [5,4], x [6,3], x [6,4])
   
   
   
@@ -226,7 +228,7 @@ ELISA <- function(x){
     geom_point(position=pd)
   
   print (Grafica_Perrona)
-  
+ } 
 }
 
 
