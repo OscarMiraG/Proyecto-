@@ -291,4 +291,119 @@ promedios
 long
 ELISA2(datos = bioinfo)
 
-
+ELISA3 <- function(datos){
+  negati <-c()
+  pos <- c()
+  limite <- 0
+  limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+  limite <- as.numeric(limite)
+  
+  pregunta <- readline("Quieres poner los datos de tus controles de forma manual?/y/n")
+  pos <- c()
+  negati <- c()
+  if(pregunta == "y"){
+    for (i in 1:length(datos)){
+      negati <- readline("Indique los valores del control negativo: ")
+      negati <- as.numeric(negati)
+    }
+    for (i in 1:length(datos)){
+      pos <- readline("Indique los valores del control positivo: ")
+      pos <- as.numeric(pos)
+    }
+  } else{
+    negati <- readline("Indique el valor del control negativo: ")
+    pos <- readline("Indique el valor del control positivo: ")
+    negati <- as.numeric(negati)
+    pos <- as.numeric(pos)
+    negati <- rep(negati, length(datos))  
+    pos <- rep(pos, length(datos)) 
+  }
+  negati <- negati/length(datos)
+  
+  pos <- pos/length(datos)
+  
+  
+  long <- length(datos)
+  promedios <- c()
+  promedios2 <- c()
+  
+  while(long > 0){
+    promedios <- c(promedios, (mean(datos[ limite, long])))
+    promedios2 <- c(promedios2, (mean(datos[limite + 1, long])))
+    print("hola")
+    long <- long - 1
+  }
+  
+  print("hola2")
+  promedios <- rev(promedios)
+  promedios2 <- rev(promedios2)
+  matriz <- rbind(promedios, promedios2, negati,pos)
+  matriz <- as.matrix(matriz)
+  print("hola3")
+  print(promedios)
+  print(promedios2)
+  print(matriz)
+  promedios3 <- as.vector(promedios)
+  promedios4 <- as.vector(promedios2)
+  
+  ### Analisis estadistico
+  promedios3 <- matrix(promedios3, ncol=1)
+  promedios4 <- matrix(promedios4, ncol=1)
+  promedios5 <- rbind(promedios3, promedios4)
+  negati <- matrix(negati, ncol=1)
+  datos2 <- cbind(datos, promedios3, negati)
+  datos2 <- as.data.frame(datos2)
+  print(datos2)
+  modelo <-lm(datos2[limite, length(datos)+1]~ datos2[limite +1, length(datos)+2], datos2)
+  resultado <- summary(modelo)
+  
+  print(resultado)
+  
+  ### Grafica
+  ### indique el nombre de la columna que contiene sus datos
+ 
+  
+  print (Grafica_Perrona)
+  pregunta2 <- readline("Quiere crear una gráfica con los datos de su tabla?/y/n ")
+  pregunta3 <- readline("Quiere que las imagenes se guarden como pdf?/y/n  ")
+  
+  if(pregunta2 == "y" & pregunta3 == "y"){
+    ruta <- readline("Indique la ruta donde quiere guardar su gráfica: ")
+    nombre <- readline("Indique el nombre de su gráfica: ")
+    ancho <- readline("Indique el ancho que quiere para su imagen: ")
+    alto <- readline("Indique el ancho que quiere para su imagen: ")
+    setwd(ruta)
+    
+    y <- readline("Indique el nombre de la columna que contiene los datos para la variable y: ")
+    x <- readline("Indique el nombre de la columna que contiene los datos para la variable x: ")
+    g <- readline("Indique el nombre de la variable de agrupamiento: ")
+    y2 <- subset(datos, select= y)
+    x2 <- subset(datos, select= x)
+    g2 <- subset(datos, select= g)
+    pd <- position_dodge(0.1)
+    
+    Grafica_Perrona <- ggplot(data= datos, aes(x = x2, y = y2, group = g2, colour=g2)) +
+      geom_errorbar(aes(ymin = Absorbancia - se, ymax = Absorbancia + se), width=.1, position=pd) +
+      geom_line(position=pd) +
+      geom_point(position=pd)
+    pdf(file = nombre,
+        width = ancho,
+        height = alto)
+    dev.off()
+  } else if(pregunta2 == "y"){
+    y <- readline("Indique el nombre de la columna que contiene los datos para la variable y: ")
+    x <- readline("Indique el nombre de la columna que contiene los datos para la variable x: ")
+    g <- readline("Indique el nombre de la variable de agrupamiento: ")
+    y2 <- subset(datos, select= y)
+    x2 <- subset(datos, select= x)
+    g2 <- subset(datos, select= g)
+    pd <- position_dodge(0.1)
+    
+    Grafica_Perrona <- ggplot(data= datos, aes(x = x2, y = y2, group = g2, colour=g2)) +
+      geom_errorbar(aes(ymin = Absorbancia - se, ymax = Absorbancia + se), width=.1, position=pd) +
+      geom_line(position=pd) +
+      geom_point(position=pd)
+    print(Grafica_Perrona)
+  }
+}
+ELISA3(bioinfo)
