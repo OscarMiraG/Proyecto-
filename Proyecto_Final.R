@@ -285,12 +285,116 @@ ELISA(Datosos)
       promedios <- rev(promedios)
       print(promedios)
       
+      ### graficas
+      library(Rmisc)
+      library(ggplot2)
+      
     }
 ELISA2(datos = bioinfo, controlneg = c(1,3,4), controlpos = c(23,33,2), coadyuv = c(1,23,3))    
 promedios
 long
 ELISA2(datos = bioinfo)
+ELISA2()
 
+
+ELISA3 <- function(datos){
+  negati <-c()
+  pos <- c()
+  limite <- 0
+  limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+  limite <- as.numeric(limite)
+  
+  pregunta <- readline("Quieres poner los datos de tus controles de forma manual?/y/n")
+  pos <- c()
+  negati <- c()
+  if(pregunta == "y"){
+  for (i in 1:length(datos)){
+  negati <- readline("Indique los valores del control negativo: ")
+  negati <- as.numeric(negati)
+  }
+  for (i in 1:length(datos)){
+    pos <- readline("Indique los valores del control positivo: ")
+    pos <- as.numeric(pos)
+  }
+  } else{
+    negati <- readline("Indique el valor del control negativo: ")
+    pos <- readline("Indique el valor del control positivo: ")
+    negati <- as.numeric(negati)
+    pos <- as.numeric(pos)
+    negati <- rep(negati, length(datos))  
+    pos <- rep(pos, length(datos)) 
+  }
+  negati <- negati/length(datos)
+  
+  pos <- pos/length(datos)
+  
+  
+  long <- length(datos)
+  promedios <- c()
+  promedios2 <- c()
+  
+  while(long > 0){
+    promedios <- c(promedios, (mean(datos[ limite, long])))
+    promedios2 <- c(promedios2, (mean(datos[limite + 1, long])))
+    print("hola")
+    long <- long - 1
+  }
+  
+  print("hola2")
+  promedios <- rev(promedios)
+  promedios2 <- rev(promedios2)
+  matriz <- rbind(promedios, promedios2, negati,pos)
+  matriz <- as.matrix(matriz)
+  print("hola3")
+  print(promedios)
+  print(promedios2)
+  print(matriz)
+  promedios3 <- as.vector(promedios)
+  promedios4 <- as.vector(promedios2)
+  
+  ### Analisis estadistico
+  promedios3 <- matrix(promedios3, ncol=1)
+  promedios4 <- matrix(promedios4, ncol=1)
+  promedios5 <- rbind(promedios3, promedios4)
+  negati <- matrix(negati, ncol=1)
+  datos2 <- cbind(datos, promedios3, negati)
+  datos2 <- as.data.frame(datos2)
+  print(datos2)
+  modelo <-lm(datos2[limite, length(datos)+1]~ datos2[limite +1, length(datos)+2], datos2)
+  resultado <- summary(modelo)
+  
+  print(resultado)
+  }
+  
+
+ELISA3(bioinfo)
+negati2 <- c()
+negati2 <- readline("Indique el valor del control negativo: ")
+negati2 <- as.numeric(negati2)
+negati2 <- rep(negati2, times= length(bioinfo))
+vec1 <- c(1,2,3,4)
+vec2 <- c(5,6,7,8)
+vec8 <- matrix(vec1, ncol=1)
+vec8
+vec3 <- matrix(vec1,nrow = length(vec1), ncol =1)
+vec4 <- matrix(vec2,nrow = length(vec2), ncol =1)
+vec3
+vec4
+vec5 <- rbind(vec3,vec4)
+vec5
+negati2 
+lengt
+vec6 <- matrix(vec1, nrow= length(vec1), ncol =1)
+
+data3 <- cbind(vec3,vec4,vec6)
+data3
+k <- cbind(data3, vec1)
+k <- as.data.frame(k)
+k
+vec6 <- vec6/length(vec1)
+vec6
+
+<<<<<<< Updated upstream
 ELISA3 <- function(datos){
   negati <-c()
   pos <- c()
@@ -407,3 +511,7 @@ ELISA3 <- function(datos){
   }
 }
 ELISA3(bioinfo)
+=======
+model <- lm(iris[ , 1]~ iris[ ,2], iris)
+summary(model)
+>>>>>>> Stashed changes
