@@ -48,9 +48,16 @@ ELISA <- function(x){
   Control_Negativo <- (x[7,3] + x [7,4] + x [8,3] + x [8,4])/4
   Conjugado <- (x[7,5] + x [7,6] + x [8,5] + x [8,6])/4
   
+  print ("Acontinuación se te muestra una tabla con los promedios de tus 3 replicas para cada dilucion:")
   print (Promedios)
+  
+  print("Valor del control negativo")
   print (Control_Negativo)
+  
+  print ("Valor del control positivo")
   print (Control_Positivo)
+  
+  print ("Valor del conjugado")
   print (Conjugado)
   
   Promedios2 <- matrix (nrow = 120, ncol = 3)
@@ -138,20 +145,19 @@ ELISA <- function(x){
   
   print (Grafica_Perrona)
   
-  ANOVA <- aov (Absorbancia ~ Dilucion * Muestra, Promedios2)
-  
-  print (ANOVA)
-  
-  Tukey <- TukeyHSD(ANOVA)
-  Comparacion <- c (Tukey [12, ], 
-                    Tukey [26, ])
-  
-  
-  print (Comparacion)
+  ANOVA <- aov (Absorbancia ~ Dilucion + Muestra, Promedios2)
   
   Resultado <- summary.aov(ANOVA)
   
+  print ("Se muestra el resultado de la prueba estadística ANOVA para comparar tus grupos")
   print (Resultado)
+  
+  Tukey <- TukeyHSD(ANOVA)
+  
+  print ("Valor de p obtenido para cada grupo de tu muestra")
+  print (Tukey$Muestra)
+  
+ 
 }else if (numero == 2){
   library (ggplot2)
   library (Rmisc)
@@ -197,7 +203,7 @@ ELISA <- function(x){
   print (Control_Positivo)
   print (Conjugado)
   
-  Promedios2 <- matrix (nrow = 72, ncol = 3)
+  Promedios2 <- matrix (nrow = 96, ncol = 3)
   colnames(Promedios2) <- c ("Absorbancia", "Muestra", "Dilucion")
   
   Promedios2 <- data.frame(Promedios2)
@@ -208,11 +214,27 @@ ELISA <- function(x){
                             x [3,9], x [4,9], x [3,10], x [4,10], x [3,11], x [4,11], 
                             x [3,12], x [4,12])
   
-  Promedios2 [25:72,1] <- c (x[5,3], x [5,4], x [6,3], x [6,4])
+  Promedios2 [25:48, 1] <- c (x[1,1], x [2,1], x[3,2], x [4,2], x[1,3], x [3,3], x[1,4], x [2,4], 
+                              x[1,5], x [2,5], x[1,6], x [2,6], x[1,7], x [2,7], x[1,8], x [2,8], 
+                              x[1,9], x [2,9], x[1,10], x [2,10], x[1,11], x [2,11], x[1,11], x [2,11])
+  
+  Promedios2 [49:96,1] <- c (x[5,3], x [5,4], x [6,3], x [6,4])
   
   
   
-  Promedios2 [1:72,3] <- c ("A", "A", 
+  Promedios2 [1:96,3] <- c ("A", "A", 
+                            "B", "B",
+                            "C", "C",
+                            "D", "D", 
+                            "E", "E", 
+                            "F", "F", 
+                            "G", "G",
+                            "H", "H",
+                            "I",  "I", 
+                            "J", "J",
+                            "K", "K", 
+                            "L", "L", 
+                            "A", "A", 
                             "B", "B",
                             "C", "C",
                             "D", "D", 
@@ -239,15 +261,23 @@ ELISA <- function(x){
   
  
   for (i in 1:36){
-    Frase <- "PostInmunizado"
-    Promedios2 [1:36,2] <- Frase2
+    Frase2 <- "PostInmunizado"
+    Promedios2 [1:24,2] <- Frase2
+    
+  }
+  
+  for (i in 1:36){
+    Frase2 <- "Preinmunizado"
+    Promedios2 [25:48,2] <- Frase2
     
   }
   
   for (i in 1:47){
     Frase2 <- "ControlNegativo"
-    Promedios2 [25:72,2] <- Frase
+    Promedios2 [49:96,2] <- Frase2
   }
+  
+  print (Promedios2)
 
   
   Resumen <- summarySE (Promedios2, measurevar = "Absorbancia", groupvars = c ("Dilucion", "Muestra"))
@@ -260,9 +290,15 @@ ELISA <- function(x){
   
   print (Grafica_Perrona)
   
-ANOVA <- aov (Promedios2$Absorbancia ~ Promedios2$Dilucion, Promedios2)
-Resultado <- summary.aov(ANOVA)
-print (Resultado)
+  ANOVA2 <- aov (Absorbancia ~ Dilucion + Muestra, Promedios2)
+  
+  Resultado2 <- summary.aov(ANOVA2)
+  
+  print (Resultado2)
+  
+  Tukey2 <- TukeyHSD(ANOVA2)
+  
+  print (Tukey2$Muestra)
 
  } 
 }
