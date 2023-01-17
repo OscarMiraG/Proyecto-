@@ -1,8 +1,6 @@
 
 ### ESTA ES LA VERSION CHIDA ###
 
-Datosos <- read.csv("Datos/Datos_Proyecto.csv")
-Datosos 
 
 Datosos2 <- read.csv ("Datos/Datos_Proyecto_2.csv")
 Datosos2
@@ -31,7 +29,7 @@ ELISA <- function(x){
   Promedios [9,1] <- (x[1,9] + x [2,9] + x [3,9])/3
   Promedios [10,1] <- (x[1,10] + x [2,10] + x [3,10])/3
   Promedios [11,1] <- (x[1,11] + x [2,11] + x [3,11])/3
-  Promedios [12,1] <- (x[1,11] + x [2,11] + x [3,12])/3
+  Promedios [12,1] <- (x[1,12] + x [2,12] + x [3,12])/3
   
   Promedios [1,2] <- (x[4,1] + x [5,1] + x [6,1])/3
   Promedios [2,2] <- (x[4,2] + x [5,2] + x [6,2])/3
@@ -55,7 +53,7 @@ ELISA <- function(x){
   print (Control_Positivo)
   print (Conjugado)
   
-  Promedios2 <- matrix (nrow = 84, ncol = 3)
+  Promedios2 <- matrix (nrow = 120, ncol = 3)
   colnames(Promedios2) <- c ("Absorbancia", "Muestra", "Dilucion")
   
   Promedios2 <- data.frame(Promedios2)
@@ -66,11 +64,28 @@ ELISA <- function(x){
                             x [4,9], x [5,9], x [6,9], x [4,10], x [5,10], x [6,10], x [4,11], x [5,11], 
                             x [6,11], x [4,12], x [5,12], x [6,12])
   
-  Promedios2 [37:84,1] <- c (x[7,3], x [7,4], x [8,3], x [8,4])
+  Promedios2 [37:72,1] <- c (x[1,1], x [2,1], x [3,1], x[1,2], x [2,2], x [3,2], x[1,3], x [3,3], x [3,3], 
+                             x[1,4], x [2,4], x [3,4], x[1,5], x [2,5], x [3,5], x[1,6], x [2,6], x [3,6], 
+                             x[1,7], x [2,7], x [3,7], x[1,8], x [2,8], x [3,8], x[1,9], x [2,9], x [3,9],
+                             x[1,10], x [2,10], x [3,10], x[1,11], x [2,11], x [3,11], x[1,12], x [2,12], x [3,12])
+  
+  Promedios2 [73:120,1] <- c (x[7,3], x [7,4], x [8,3], x [8,4])
   
   
   
-  Promedios2 [1:84,3] <- c ("A", "A", "A", 
+  Promedios2 [1:120,3] <- c ("A", "A", "A", 
+                            "B", "B", "B",
+                            "C", "C", "C",
+                            "D", "D", "D", 
+                            "E", "E", "E", 
+                            "F", "F", "F", 
+                            "G", "G", "G",
+                            "H", "H", "H",
+                            "I",  "I",  "I", 
+                            "J", "J", "J",
+                            "K", "K", "K", 
+                            "L", "L", "L", 
+                            "A", "A", "A", 
                             "B", "B", "B",
                             "C", "C", "C",
                             "D", "D", "D", 
@@ -94,6 +109,7 @@ ELISA <- function(x){
                             "J", "J", "J", "J",
                             "K", "K", "K", "K", 
                             "L", "L", "L", "L")
+ 
   
   for (i in 1:36){
     Frase <- "PostInmunizado"
@@ -101,16 +117,18 @@ ELISA <- function(x){
     
   }
   
-  for (i in 1:47){
-    Frase2 <- "ControlNegativo"
-    Promedios2 [37:84,2] <- Frase2
+  for (i in 1:36){
+    Frase <- "Preinmunizado"
+    Promedios2 [37:72,2] <- Frase
+    
   }
   
-  print (Promedios2)
+  for (i in 1:47){
+    Frase2 <- "ControlNegativo"
+    Promedios2 [73:120,2] <- Frase2
+  }
   
   Resumen <- summarySE (Promedios2, measurevar = "Absorbancia", groupvars = c ("Dilucion", "Muestra"))
-  
-  print (Resumen)
   
   pd <- position_dodge(0.1)
   Grafica_Perrona <- ggplot(data= Resumen, aes(x = Dilucion, y = Absorbancia, group = Muestra, colour=Muestra)) +
@@ -119,6 +137,21 @@ ELISA <- function(x){
     geom_point(position=pd)
   
   print (Grafica_Perrona)
+  
+  ANOVA <- aov (Absorbancia ~ Dilucion * Muestra, Promedios2)
+  
+  print (ANOVA)
+  
+  Tukey <- TukeyHSD(ANOVA)
+  Comparacion <- c (Tukey [12, ], 
+                    Tukey [26, ])
+  
+  
+  print (Comparacion)
+  
+  Resultado <- summary.aov(ANOVA)
+  
+  print (Resultado)
 }else if (numero == 2){
   library (ggplot2)
   library (Rmisc)
@@ -204,22 +237,20 @@ ELISA <- function(x){
                             "K", "K", "K", "K", 
                             "L", "L", "L", "L")
   
-  for (i in 1:24){
+ 
+  for (i in 1:36){
     Frase <- "PostInmunizado"
-    Promedios2 [1:36,2] <- Frase
+    Promedios2 [1:36,2] <- Frase2
     
   }
   
   for (i in 1:47){
     Frase2 <- "ControlNegativo"
-    Promedios2 [25:72,2] <- Frase2
+    Promedios2 [25:72,2] <- Frase
   }
-  
-  print (Promedios2)
+
   
   Resumen <- summarySE (Promedios2, measurevar = "Absorbancia", groupvars = c ("Dilucion", "Muestra"))
-  
-  print (Resumen)
   
   pd <- position_dodge(0.1)
   Grafica_Perrona <- ggplot(data= Resumen, aes(x = Dilucion, y = Absorbancia, group = Muestra, colour=Muestra)) +
@@ -228,6 +259,11 @@ ELISA <- function(x){
     geom_point(position=pd)
   
   print (Grafica_Perrona)
+  
+ANOVA <- aov (Promedios2$Absorbancia ~ Promedios2$Dilucion, Promedios2)
+Resultado <- summary.aov(ANOVA)
+print (Resultado)
+
  } 
 }
 
@@ -235,7 +271,7 @@ ELISA <- function(x){
 
 
 
-ELISA(Datosos)
+ELISA(Datosos2)
 
 
 
@@ -394,7 +430,6 @@ k
 vec6 <- vec6/length(vec1)
 vec6
 
-<<<<<<< Updated upstream
 ELISA3 <- function(datos){
   negati <-c()
   pos <- c()
@@ -468,8 +503,8 @@ ELISA3 <- function(datos){
  
   
   print (Grafica_Perrona)
-  pregunta2 <- readline("Quiere crear una gráfica con los datos de su tabla?/y/n ")
-  pregunta3 <- readline("Quiere que las imagenes se guarden como pdf?/y/n  ")
+  pregunta2 <- readline("Quiere crear una gráfica con los datos de su tabla?/y/n: ")
+  pregunta3 <- readline("Quiere que las imagenes se guarden como pdf?/y/n:  ")
   
   if(pregunta2 == "y" & pregunta3 == "y"){
     ruta <- readline("Indique la ruta donde quiere guardar su gráfica: ")
@@ -511,7 +546,7 @@ ELISA3 <- function(datos){
   }
 }
 ELISA3(bioinfo)
-=======
 model <- lm(iris[ , 1]~ iris[ ,2], iris)
 summary(model)
->>>>>>> Stashed changes
+
+ELISA3()
