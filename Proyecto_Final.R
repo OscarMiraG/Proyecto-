@@ -582,10 +582,367 @@ ELISA3 <- function(datos){
   }
 }
 ELISA3(bioinfo)
+<<<<<<< Updated upstream
 model <- lm(iris[ , 1]~ iris[ ,2], iris)
 summary(model)
 
 ELISA3()
+
+#################elisa final
+=======
+
+############elisa4
+>>>>>>> Stashed changes
+ELISA4 <- function(datos, manual){
+  library(Rmisc)
+  library(ggplot2)
+  
+  if(manual == FALSE){
+<<<<<<< Updated upstream
+    limite <- 0
+    limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+    limite <- as.numeric(limite)
+    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre)")
+    negati <- readline("Indique el valor del control negativo: ")
+    negati <- as.numeric(negati)
+    negati <- rep(negati, length(datos))
+=======
+  limite <- 0
+  limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+  limite <- as.numeric(limite)
+  inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre)")
+  negati <- readline("Indique el valor del control negativo: ")
+  negati <- as.numeric(negati)
+  negati <- rep(negati, length(datos))
+>>>>>>> Stashed changes
+  } else{
+    columnas <- readline("indique el número de columnas de su base de datos: ")
+    columnas <- as.numeric(columnas)
+    vec <- readline("indique el número total de datos que ingresará: ")
+    vec <- as.numeric(vec)
+    vec1 <- c()
+    while(vec != length(vec1)){
+<<<<<<< Updated upstream
+      datardos <- readline("ingrese su dato (desde el inicio de su tabla y de izquierda a derecha)")
+      vec1 <- c(vec1, datardos)
+=======
+    datardos <- readline("ingrese su dato (desde el inicio de su tabla y de izquierda a derecha)")
+    vec1 <- c(vec1, datardos)
+>>>>>>> Stashed changes
+    }
+    vec1 <- as.numeric(vec1)
+    datos <- matrix(vec1, ncol= columnas)
+    datos <- as.data.frame(datos)
+<<<<<<< Updated upstream
+    # pregunta <- readline("¿Estás satisfecho con tu base de datos?y/n")
+    #if(pregunta == "n"){
+    # pregunta2 <- readline("indique el número de casillas que quiere quitar")
+    #pregunta2 <- as.numeric(pregunta2)
+    #for(i in 1:pregunta2)
+    #seleccionr <- readline("indique el número de renglón que quiere quitar")
+    #seleccionc <- readline("indique el número de columna que quiere quitar")
+    #seleccionc <- as.numeric(seleccionc); seleccionr <- as.numeric(seleccionr)
+    
+=======
+   # pregunta <- readline("¿Estás satisfecho con tu base de datos?y/n")
+    #if(pregunta == "n"){
+     # pregunta2 <- readline("indique el número de casillas que quiere quitar")
+      #pregunta2 <- as.numeric(pregunta2)
+      #for(i in 1:pregunta2)
+      #seleccionr <- readline("indique el número de renglón que quiere quitar")
+      #seleccionc <- readline("indique el número de columna que quiere quitar")
+      #seleccionc <- as.numeric(seleccionc); seleccionr <- as.numeric(seleccionr)
+      
+>>>>>>> Stashed changes
+    #}
+    limite <- 0
+    limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre): ")
+    limite <- as.numeric(limite)
+    negati <- readline("Indique el valor del control negativo: ")
+    negati <- as.numeric(negati)
+    negati <- rep(negati, length(datos))
+  }
+  
+  #### enderezar matriz
+  print("AQUI ESTA NEGATI")
+  print(negati)
+  con1 <- 1
+  con2 <- 1
+  primero <- c()
+  while(con1 <= limite){
+    primero <- c(primero, bioinfo[con1, con2])
+    con2 <- con2 + 1
+    if(con2 > length(bioinfo)){
+      con2 <- 1
+      con1 <- con1 + 1
+    }
+  }
+  con3 <- limite + 1
+  con4 <- 1
+  segundo <- c()
+  while(con3 <= nrow(datos)){
+    segundo <- c(segundo, bioinfo[con3, con4])
+    con4 <- con4 + 1
+    if(con4 > length(bioinfo)){
+      con4 <- 1
+      con3 <- con3 + 1
+    }
+  }
+  primero <- matrix(primero, ncol=1)
+  segundo <- matrix(segundo, ncol= 1)
+  negati2 <- rep(negati, 1)
+  negati2 <- matrix(negati2, ncol = 1)
+  matriz_orden <- rbind(primero, segundo, negati2)
+  print("PRIMER INTENTO")
+  print(matriz_orden)
+  pretxt <- "pre-inmunizado"
+  postxt <- "pos-inmunizado"
+  dil <- c(1:length(datos))
+  if(inmuni == "pre"){
+    preinmuno <- rep(pretxt, (length(datos)*nrow(datos))/2)
+    posinmuno <- rep(postxt, (length(datos)*nrow(datos))/2)
+    preinmuno <- matrix(preinmuno, ncol = 1)
+    posinmuno <- matrix(posinmuno, ncol = 1)
+    negati3 <- rep("negativo", length(negati))
+    negati3 <- matrix(negati3, ncol = 1)
+    todos <- rbind(posinmuno, preinmuno, negati3)
+    dil2 <- rep(dil, nrow(datos)+ 1)
+    dil2 <- matrix(dil2, ncol=1)
+    #### checkpoint
+    print("LONGITUDES")
+    print(length(preinmuno))
+    print(length(posinmuno))
+    print(length(matriz_orden))
+    print(length((dil2)))
+    print(length(todos))
+    matriz_orden <- cbind(matriz_orden, todos, dil2)
+    matriz_orden <- as.data.frame(matriz_orden)
+    print("YA QUEDO CREO")
+    colnames(matriz_orden) <- c("Abosrbancia", "Muestra", "Dilucion")
+    print(matriz_orden)
+  } else{
+    preinmuno <- rep(pretxt, (length(datos)*nrow(datos))/2)
+    posinmuno <- rep(postxt, (length(datos)*nrow(datos))/2)
+    preinmuno <- matrix(preinmuno, ncol = 1)
+    posinmuno <- matrix(posinmuno, ncol = 1)
+    negati3 <- rep("negativo", length(negati))
+    negati3 <- matrix(negati3, ncol = 1)
+    todos <- rbind(posinmuno, preinmuno, negati3)
+    dil2 <- rep(dil, nrow(datos)+ 1)
+    dil2 <- matrix(dil2, ncol=1)
+    matriz_orden <- cbind(matriz_orden, todos, dil2)
+    matriz_orden <- as.data.frame(matriz_orden)
+    print("YA QUEDO CREO")
+    colnames(matriz_orden) <- c("Abosrbancia", "Muestra", "Dilucion")
+    print(matriz_orden)
+  }
+  
+<<<<<<< Updated upstream
+  
+=======
+
+>>>>>>> Stashed changes
+  #### matriz con los promedios     
+  long <- length(datos)
+  promedios <- c()
+  promedios2 <- c()
+  limite2 <- 0
+  limite2 <- limite + 1
+  while(long > 0){
+    promedios <- c(promedios, (mean(datos[ 1:limite, long])))
+    promedios2 <- c(promedios2, (mean(datos[limite2:nrow(datos), long])))
+    print("hola")
+    limite2 <- limite + 1
+    long <- long - 1
+  }
+  
+  print("hola2")
+  promedios3 <- rev(promedios)
+  promedios4 <- rev(promedios2)
+  promedios3 <- matrix(promedios3, nrow = length(datos))
+  promedios4 <- matrix(promedios4, nrow = length(datos))
+  negati <- matrix(negati, nrow = length(datos))
+  
+  posi <- rep("posinmunizacion", length(datos))
+  prei <- rep("preinmunizacion", length(datos))
+  negati4 <- rep("negativo", length(datos))
+  
+  posi <- matrix(posi, ncol = 1)
+  posi <- matrix(posi, ncol = 1)
+  posi <- matrix(posi, ncol = 1)
+  
+  dilucion <- rep(1:length(datos), 3)
+  dilucion <- matrix(dilucion, ncol = 1)
+
+  if(inmuni == "pre"){
+    pro1 <- cbind(promedios3, prei)
+    pro2 <- cbind(promedios4, posi)
+    pro3 <- cbind(negati, negati4)
+    matfinal <- rbind(pro1,pro2, pro3)
+    matfinal <-  cbind(mat1, dilucion)
+    print("AVER SI JALA ESTOS")
+    print(matfinal
+    print(mat1)
+>>>>>>> Stashed changes
+  }else{
+    pro1 <- cbind(promedios3, posi)
+    pro2 <- cbind(promedios4, prei)
+    pro3 <- cbind(negati, negati4)
+    matfinal <- rbind(pro1,pro2, pro3) 
+    matfinal <-  cbind(mat1, dilucion)
+    print("AVER SI JALA ESTOS")
+<<<<<<< Updated upstream
+    print(matfinal)
+=======
+    print(mat1)
+>>>>>>> Stashed changes
+  }
+  
+  ### Grafica
+  ### indique el nombre de la columna que contiene sus datos
+<<<<<<< Updated upstream
+  
+=======
+    
+>>>>>>> Stashed changes
+}
+
+
+ELISA4(bioinfo, manual = FALSE)
+
+###### ELISA FINAL
+ELISA4 <- function(datos, manual){
+  library(Rmisc)
+  library(ggplot2)
+  
+  if(manual == FALSE){
+    limite <- 0
+    limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+    limite <- as.numeric(limite)
+    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre)")
+    negati <- c()
+    negati <- readline("Indique el valor del control negativo: ")
+    negati <- as.numeric(negati)
+    negati <- rep(negati, length(datos))
+  } else{
+    columnas <- readline("indique el número de columnas de su base de datos: ")
+    columnas <- as.numeric(columnas)
+    vec <- readline("indique el número total de datos que ingresará: ")
+    vec <- as.numeric(vec)
+    vec1 <- c()
+    while(vec != length(vec1)){
+      datardos <- readline("ingrese su dato (desde el inicio de su tabla y de izquierda a derecha)")
+      vec1 <- c(vec1, datardos)
+    }
+    vec1 <- as.numeric(vec1)
+    datos <- matrix(vec1, ncol= columnas)
+    datos <- as.data.frame(datos)
+    # pregunta <- readline("¿Estás satisfecho con tu base de datos?y/n")
+    #if(pregunta == "n"){
+    # pregunta2 <- readline("indique el número de casillas que quiere quitar")
+    #pregunta2 <- as.numeric(pregunta2)
+    #for(i in 1:pregunta2)
+    #seleccionr <- readline("indique el número de renglón que quiere quitar")
+    #seleccionc <- readline("indique el número de columna que quiere quitar")
+    #seleccionc <- as.numeric(seleccionc); seleccionr <- as.numeric(seleccionr)
+    
+    #}
+    limite <- 0
+    limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
+    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre): ")
+    limite <- as.numeric(limite)
+    negati <- c()
+    negati <- readline("Indique el valor del control negativo: ")
+    negati <- as.numeric(negati)
+    negati <- rep(negati, length(datos))
+  }
+  
+  #### enderezar matriz
+  con1 <- 1
+  con2 <- 1
+  primero <- c()
+  while(con1 <= limite){
+    primero <- c(primero, bioinfo[con1, con2])
+    con2 <- con2 + 1
+    if(con2 == length(bioinfo)){
+      con2 <- 1
+      con1 <- con1 + 1
+    }
+  }
+  con3 <- limite + 1
+  con4 <- 1
+  segundo <- c()
+  while(con3 <= nrow(datos)){
+    segundo <- c(segundo, bioinfo[con3, con4])
+    con4 <- con4 + 1
+    if(con4 == length(bioinfo)){
+      con4 <- 1
+      con3 <- con3 + 1
+    }
+  }
+  primero <- matrix(primero, ncol=1)
+  segundo <- matrix(primero, ncol= 1)
+  matriz_orden <- rbind(primero, segundo, negati)
+  print("PRIMER INTENTO")
+  print(matriz_orden)
+  pretxt <- "pre-inmunizado"
+  postxt <- "pos-inmunizado"
+  dil <- c(1:length(datos))
+  if(inmuni == "pre"){
+    preinmuno <- rep(pretxt, length(primero))
+    posinmuno <- rep(postxt, length(segundo))
+    preinmuno <- matrix(preinmuno, ncol = 1)
+    posinmuno <- matrix(posinmuno, ncol = 1)
+    todos <- rbind(posinmuno, preinmuno)
+    dil2 <- rep(dil, 3)
+    dil2 <- matrix(dil2, ncol=1)
+    matriz_orden <- cbind(matriz_orden, todos, dil2)
+    matriz_orden <- as.data.frame(matriz_orden)
+  } else{
+    preinmuno <- rep(pretxt, length(segundo))
+    posinmuno <- rep(postxt, length(primero))
+    preinmuno <- matrix(preinmuno, ncol = 1)
+    posinmuno <- matrix(posinmuno, ncol = 1)
+    todos <- rbind(posinmuno, preinmuno)
+    dil2 <- rep(dil, 3)
+    dil2 <- matrix(dil2, ncol=1)
+    matriz_orden <- cbind(matriz_orden, todos, dil2)
+    matriz_orden <- as.data.frame(matriz_orden)
+    print("YA QUEDO CREO")
+    print(matriz_orden)
+  }
+  
+  
+  #### matriz con los promedios     
+  long <- length(datos)
+  promedios <- c()
+  promedios2 <- c()
+  limite2 <- 0
+  limite2 <- limite + 1
+  while(long > 0){
+    promedios <- c(promedios, (mean(datos[ 1:limite, long])))
+    promedios2 <- c(promedios2, (mean(datos[limite2:nrow(datos), long])))
+    print("hola")
+    limite2 <- limite + 1
+    long <- long - 1
+  }
+  
+  print("hola2")
+  promedios <- rev(promedios)
+  promedios2 <- rev(promedios2)
+  matriz <- rbind(promedios, promedios2, negati,pos)
+  matriz <- as.matrix(matriz)
+  print("hola3")
+  print(promedios)
+  print(promedios2)
+  print(matriz)
+  
+  ### Grafica
+  ### indique el nombre de la columna que contiene sus datos
+  
+  
+}
 
 #################elisa final
 ELISA4 <- function(datos, manual){
@@ -764,3 +1121,4 @@ ELISA4 <- function(datos, manual){
 
 
 ELISA4(bioinfo, manual = FALSE)
+
