@@ -6,7 +6,7 @@ ELISA4 <- function(datos, manual){
     limite <- 0
     limite <- readline("indique el renglón hasta el que llegan los pos o pre-inmunizados: ")
     limite <- as.numeric(limite)
-    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre)")
+    inmuni <- readline("indique si se trata de los pos (pos) o pre-inmunizados (pre): ")
     negati <- readline("Indique el valor del control negativo: ")
     negati <- as.numeric(negati)
     negati <- rep(negati, length(datos))
@@ -84,10 +84,9 @@ ELISA4 <- function(datos, manual){
     aovchido <- aov(as.numeric(paste(matriz_ordenaov$Abosrbancia)) ~ unlist(matriz_ordenaov$Muestra) + 
                       unlist(matriz_ordenaov$Dilucion, matriz_ordenaov))
     resultadoaov <- summary.aov(aovchido)
+    print(resultadoaov)
     test <- TukeyHSD(aovchido)
-    print(test)
-    print("Valor de p obtenido para cada grupo de tu muestra")
-    print(test$`unlist(matriz_orden$Muestra)`)
+    
     
   } else{
     preinmuno <- rep(pretxt, (length(datos)*nrow(datos))/2)
