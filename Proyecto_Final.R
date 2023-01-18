@@ -888,7 +888,7 @@ ELISA4 <- function(datos, manual){
   print(matriz_orden)
   pretxt <- "pre-inmunizado"
   postxt <- "pos-inmunizado"
-  dil <- c(1:length(datos))
+  dil <- letters[seq( from = 1, to = 10 )]
   if(inmuni == "pre"){
     preinmuno <- rep(pretxt, length(primero))
     posinmuno <- rep(postxt, length(segundo))
@@ -990,15 +990,13 @@ ELISA4 <- function(datos, manual){
   }
   
   #### enderezar matriz
-  print("AQUI ESTA NEGATI")
-  print(negati)
   con1 <- 1
   con2 <- 1
   primero <- c()
   while(con1 <= limite){
-    primero <- c(primero, bioinfo[con1, con2])
+    primero <- c(primero, datos[con1, con2])
     con2 <- con2 + 1
-    if(con2 > length(bioinfo)){
+    if(con2 > length(datos)){
       con2 <- 1
       con1 <- con1 + 1
     }
@@ -1007,9 +1005,9 @@ ELISA4 <- function(datos, manual){
   con4 <- 1
   segundo <- c()
   while(con3 <= nrow(datos)){
-    segundo <- c(segundo, bioinfo[con3, con4])
+    segundo <- c(segundo, datos[con3, con4])
     con4 <- con4 + 1
-    if(con4 > length(bioinfo)){
+    if(con4 > length(datos)){
       con4 <- 1
       con3 <- con3 + 1
     }
@@ -1019,11 +1017,9 @@ ELISA4 <- function(datos, manual){
   negati2 <- rep(negati, 1)
   negati2 <- matrix(negati2, ncol = 1)
   matriz_orden <- rbind(primero, segundo, negati2)
-  print("PRIMER INTENTO")
-  print(matriz_orden)
   pretxt <- "pre-inmunizado"
   postxt <- "pos-inmunizado"
-  dil <- c(1:length(datos))
+  dil <- letters[seq( from = 1, to = length(datos) )]
   if(inmuni == "pre"){
     preinmuno <- rep(pretxt, (length(datos)*nrow(datos))/2)
     posinmuno <- rep(postxt, (length(datos)*nrow(datos))/2)
@@ -1034,18 +1030,21 @@ ELISA4 <- function(datos, manual){
     todos <- rbind(posinmuno, preinmuno, negati3)
     dil2 <- rep(dil, nrow(datos)+ 1)
     dil2 <- matrix(dil2, ncol=1)
-    #### checkpoint
-    print("LONGITUDES")
-    print(length(preinmuno))
-    print(length(posinmuno))
-    print(length(matriz_orden))
-    print(length((dil2)))
-    print(length(todos))
     matriz_orden <- cbind(matriz_orden, todos, dil2)
     matriz_orden <- as.data.frame(matriz_orden)
-    print("YA QUEDO CREO")
     colnames(matriz_orden) <- c("Abosrbancia", "Muestra", "Dilucion")
-    print(matriz_orden)
+    ##### analisis estadistico
+    matriz_ordenaov <- matriz_orden[1:length(primero)+length(segundo)+1, ]
+    matriz_ordenaov <- as.data.frame(matriz_ordenaov)
+    matriz_ordenaov
+    aovchido <- aov(as.numeric(paste(matriz_ordenaov$Abosrbancia)) ~ matriz_ordenaov$Muestra + 
+                      matriz_ordenaov$Dilucion, matriz_ordenaov)
+    resultadoaov <- summary.aov(aovchido)
+    test <- TukeyHSD(aovchido)
+    print(test)
+    print("Valor de p obtenido para cada grupo de tu muestra")
+    print(test$`unlist(matriz_orden$Muestra)`)
+    
   } else{
     preinmuno <- rep(pretxt, (length(datos)*nrow(datos))/2)
     posinmuno <- rep(postxt, (length(datos)*nrow(datos))/2)
@@ -1058,9 +1057,18 @@ ELISA4 <- function(datos, manual){
     dil2 <- matrix(dil2, ncol=1)
     matriz_orden <- cbind(matriz_orden, todos, dil2)
     matriz_orden <- as.data.frame(matriz_orden)
-    print("YA QUEDO CREO")
     colnames(matriz_orden) <- c("Abosrbancia", "Muestra", "Dilucion")
-    print(matriz_orden)
+    ##### analisis estadistico
+    matriz_ordenaov <- matriz_orden[1:length(primero)+length(segundo)+1, ]
+    matriz_ordenaov <- as.data.frame(matriz_ordenaov)
+    matriz_ordenaov
+    aovchido <- aov(as.numeric(paste(matriz_ordenaov$Abosrbancia)) ~ unlist(matriz_ordenaov$Muestra) + 
+                  unlist(matriz_ordenaov$Dilucion, matriz_ordenaov))
+    resultadoaov <- summary.aov(aovchido)
+    test <- TukeyHSD(aovchido)
+    print(test)
+    print("Valor de p obtenido para cada grupo de tu muestra")
+    print(test$`unlist(matriz_orden$Muestra)`)
   }
   
   
@@ -1073,12 +1081,10 @@ ELISA4 <- function(datos, manual){
   while(long > 0){
     promedios <- c(promedios, (mean(datos[ 1:limite, long])))
     promedios2 <- c(promedios2, (mean(datos[limite2:nrow(datos), long])))
-    print("hola")
     limite2 <- limite + 1
     long <- long - 1
   }
   
-  print("hola2")
   promedios3 <- rev(promedios)
   promedios4 <- rev(promedios2)
   promedios3 <- matrix(promedios3, nrow = length(datos))
@@ -1093,32 +1099,58 @@ ELISA4 <- function(datos, manual){
   posi <- matrix(posi, ncol = 1)
   posi <- matrix(posi, ncol = 1)
   
-  dilucion <- rep(1:length(datos), 3)
-  dilucion <- matrix(dilucion, ncol = 1)
+  dilucion <- letters[seq( from = 1, to = length(datos) )]
+  dilucion2<- rep(dilucion, 3)
+  dilucion2 <- matrix(dilucion, ncol = 1)
   
   if(inmuni == "pre"){
     pro1 <- cbind(promedios3, prei)
     pro2 <- cbind(promedios4, posi)
     pro3 <- cbind(negati, negati4)
     matfinal <- rbind(pro1,pro2, pro3)
-    matfinal <-  cbind(mat1, dilucion)
-    print("AVER SI JALA ESTOS")
-    print(matfinal)
+    matfinal <-  cbind(matfinal, dilucion)
+
+    colnames(matfinal) <- c("Absorbancia", "Muestra", "Dilucion")
+    matfinal <- as.data.frame(t(matfinal))
+    
+    ##### grafica
+    matfinal2 <- as.data.frame(t(matfinal))
+    grafica <- ggplot(data= matfinal2, aes(x=matfinal2$Dilucion ,y= as.numeric(paste(matfinal2$Absorbancia)), group= matfinal2$Muestra,
+                                           colour= matfinal2$Muestra)) +
+      geom_line()+
+      geom_point()+
+      ylab("Absorcion")+
+      xlab("Dilucion")+
+      labs(color='Muestra') 
+    grafica
+    
   }else{
     pro1 <- cbind(promedios3, posi)
     pro2 <- cbind(promedios4, prei)
     pro3 <- cbind(negati, negati4)
     matfinal <- rbind(pro1,pro2, pro3) 
-    matfinal <-  cbind(mat1, dilucion)
-    print("AVER SI JALA ESTOS")
-    print(matfinal)
+    matfinal <-  cbind(matfinal, dilucion)
+    colnames(matfinal) <- c("Absorbancia", "Muestra", "Dilucion")
+    matfinal <- as.data.frame(t(matfinal))
+    
+    ##### grafica
+    matfinal2 <- as.data.frame(t(matfinal))
+    grafica <- ggplot(data= matfinal2, aes(x=matfinal2$Dilucion ,y= as.numeric(paste(matfinal2$Absorbancia)), group= matfinal2$Muestra,
+                                           colour= matfinal2$Muestra)) +
+      geom_line()+
+      geom_point()+
+    ylab("Absorcion")+
+      xlab("Dilucion")+
+      labs(color='Muestra') 
+    grafica
+    
   }
   
-  ### Grafica
-  ### indique el nombre de la columna que contiene sus datos
   
 }
 
 
-ELISA4(bioinfo, manual = FALSE)
+ELISA4(Exponer1, manual = FALSE)
 
+
+letters[seq( from = 1, to = 10 )]
